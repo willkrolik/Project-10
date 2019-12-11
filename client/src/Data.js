@@ -23,7 +23,7 @@ export default class Data {
   }
 
   async getUser(username, password) {
-    const response = await this.api(`/users`, 'GET', null, true, { username, password });
+    const response = await this.api(`/allUsers`, 'GET', null, true, { username, password });
     if (response.status === 200) {
       return response.json().then(data => data);
     }
@@ -35,10 +35,10 @@ export default class Data {
     }
   }
   
-  async createUser(user) {
-    const response = await this.api('/users', 'POST', user);
+  async createUser(firstName, lastName, emailAddress, password, confirmPassword) {
+    const response = await this.api('/users', 'POST', {firstName, lastName, emailAddress, password, confirmPassword});
     if (response.status === 201) {
-      return [];
+      return response.json().then(data => data);
     }
     else if (response.status === 400) {
       return response.json().then(data => {
