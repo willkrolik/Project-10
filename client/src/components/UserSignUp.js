@@ -8,7 +8,6 @@ export default class UserSignUp extends Component {
     lastName: '',
     emailAddress: '',
     password: '',
-    confirmPassword: '',
     errors: [],
   }
 
@@ -18,7 +17,6 @@ export default class UserSignUp extends Component {
       lastName,
       emailAddress,
       password,
-      confirmPassword,
       errors,
     } = this.state;
 
@@ -61,13 +59,7 @@ export default class UserSignUp extends Component {
                   value={password}
                   onChange={this.change}
                   placeholder="Password" />
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="confirmPassword"
-                  value={confirmPassword}
-                  onChange={this.change}
-                  placeholder="Confirm Password" />
+                
               </React.Fragment>
             )} />
           <p>
@@ -89,14 +81,14 @@ export default class UserSignUp extends Component {
     });
   }
 
-  submit = () => {
+  submit = async () => {
     const { context } = this.props;
     const {
       firstName,
       lastName,
       emailAddress,
       password,
-      confirmPassword
+      errors
     } = this.state;
 
     // Create user
@@ -105,7 +97,7 @@ export default class UserSignUp extends Component {
       lastName,
       emailAddress,
       password,
-      confirmPassword
+      errors
     };
 
 
@@ -114,7 +106,7 @@ export default class UserSignUp extends Component {
     //     this.setState({ errors });
     //   } else
 
-    context.actions.signUp(user.firstName, user.lastName, user.emailAddress, user.password, user.confirmPassword)
+    context.actions.signUp(user.firstName, user.lastName, user.emailAddress, user.password)
        .then(() => {
           return context.actions.signIn(user.emailAddress, user.password)
             .then(() => {
