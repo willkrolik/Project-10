@@ -8,7 +8,7 @@ const auth = require('basic-auth');
 
 // This array is used to keep track of user records
 // as they are created.
-const allUsers = [];
+const users = [];
 
 const nameValidator = check('name')
   .exists({ checkNull: true, checkFalsy: true })
@@ -38,8 +38,8 @@ const authenticateUser = async(req, res, next) => {
 
   if (credentials) {
     // Look for a user whose `username` matches the credentials `name` property.
-    //const user = allUsers.find(u => u.username === credentials.name);
-     await User.findOne({where: { emailAddress : credentials.emailAddress } }).then( user => { //liam changed credentials.name
+    //const user = users.find(u => u.username === credentials.name);
+     await User.findOne({where: { emailAddress : credentials.name } }).then( user => {
 
     if (user) {
       const authenticated = bcrypt
@@ -181,8 +181,8 @@ router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res, ne
 }))
 
 // returns current user 
-router.get('/allUsers', authenticateUser, asyncHandler(async(req, res) => {
-  const user = authenticateUser; //liam changed req.currentUser;
+router.get('/users', authenticateUser, asyncHandler(async(req, res) => {
+  const user = req.currentUser;
 
   res.json({
     id: user.id,
@@ -217,10 +217,10 @@ router.post('/users', [
       const errorMessages = errors.array().map(error => error.msg);
       res.status(400).json({errors: errorMessages});
     } else {
-      const allUsers = await User.findAll({});
-      const hasEmailBeenUsed = allUsers.some(u => u.emailAddress === req.body.emailAddress);
+      let users = await User.findAll({});
+      const user = users.find(u => u.emailAddress === req.body.emailAddress);
       // validate if the email address provided isn't already in the system 
-      if (!hasEmailBeenUsed) {
+      if (!user) {
         let password = req.body.password;
         let hashedPassword = bcrypt.hashSync(password, 10);
         // hash out the provided password to the power of 10
@@ -231,34 +231,12 @@ router.post('/users', [
           password: hashedPassword
         };
         // Use findOrCreate to create new user 
-        try {
-        await User.findOrCreate({where: newUser});
-        res.status(201).end();}
-        catch(error) {
-          console.log("user creation failed");
-          console.log(error);
-        }
-        console.log(`${newUser.firstName} ${newUser.lastName} created!`)
-
-        try {
-          await User.findOne({
-            where: {
-              emailAddress: newUser.emailAddress
-            }
-          })
-        }
-        catch(c) {
-
-        }
-
+        User.findOrCreate({where: newUser});
         res.status(201).end();
       } else {
-        const errorMessage = "Email already exists in our system";
-
-        console.log(errorMessage)
         // Returns error if the value already exists 
         res.status(400).json({
-          errors: errorMessage
+          errors: "Email already exists in our system"
         });
       }
     }

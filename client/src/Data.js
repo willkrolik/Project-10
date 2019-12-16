@@ -23,7 +23,7 @@ export default class Data {
   }
 
   async getUser(username, password) {
-    const response = await this.api(`/allUsers`, 'GET', null, true, { username, password });
+    const response = await this.api(`/users`, 'GET', null, true, { username, password });
     if (response.status === 200) {
       return response.json().then(data => data);
     }
