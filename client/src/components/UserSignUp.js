@@ -90,7 +90,6 @@ export default class UserSignUp extends Component {
       password,
       errors
     } = this.state;
-
     // Create user
     const user = {
       firstName,
@@ -99,18 +98,15 @@ export default class UserSignUp extends Component {
       password,
       errors
     };
-
-
     // .then(errors => {
     //   if (errors.length) {
     //     this.setState({ errors });
     //   } else
-
     context.actions.signUp(user.firstName, user.lastName, user.emailAddress, user.password)
        .then(() => {
-          return context.actions.signIn(user.emailAddress, user.password)
+          context.actions.signIn(user.emailAddress, user.password)
             .then(() => {
-              this.props.history.push({ from: { pathname: '/authenticated' } });
+              this.props.history.push({pathname: '/authenticated'});
             });
         }
       )
@@ -118,10 +114,8 @@ export default class UserSignUp extends Component {
         console.log(err);
         this.props.history.push('/error');
       });
-
   }
-
   cancel = () => {
     this.props.history.push('/');
   }
-}
+} 
