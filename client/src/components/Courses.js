@@ -9,7 +9,7 @@ export default class Courses extends Component {
     this.getCourses();
   }
   getCourses = async () => {
-    const url = "/courses";
+    const url = "/courses/?userId=1";
     try {
       const response = await this.props.context.data.api(url);
       if (response.status === 200) {
