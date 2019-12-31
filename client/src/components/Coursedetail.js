@@ -39,13 +39,23 @@ export default class CourseDetail extends Component {
 
 
     render() {
+
+      let title, description, estimatedTime, materialsNeeded
+      if (this.state.course) {
+        ({
+          title,
+          description,
+          estimatedTime,
+          materialsNeeded
+        } = this.state.course);
+      }
+      
       const {
-        title,
-        description,
-        estimatedTime,
-        materialsNeeded,
+
         context
       } = this.props;
+    
+      
       const authUser = context.authenticatedUser;
       const courseOwnerName = authUser ? `${authUser.firstName} ${authUser.lastName}` : "No User Signed In"
       const user = this.context.user;
@@ -98,6 +108,8 @@ console.log(user);
         </div>
       );
     }
+
+    
   }
 
 

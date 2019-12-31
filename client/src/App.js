@@ -14,7 +14,7 @@ import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
 import Forbidden from './components/Forbidden';
 import Authenticated from './components/Authenticated';
-import Createcourse from './components/Createcourse';
+import CreateCourse from './components/CreateCourse';
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute';
 import CourseDetail from './components/CourseDetail';
@@ -36,7 +36,7 @@ export default () => (
         <Route exact path="/courses/:id" component={CourseDetailWithContext}/>
         <Route exact path="/" component={CourseswithContext} /> 
         <Route exact path="/" component={Public} />
-        <Route exact path="/courses/create" component={Createcourse} />
+        <Route exact path="/courses" component={CreateCourse} />
         <Route exact path="/Forbidden" component={Forbidden} />
         <PrivateRoute path="/authenticated" component={AuthWithContext} />
         <Route path="/signin" component={UserSignInWithContext} />

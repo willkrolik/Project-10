@@ -1,33 +1,43 @@
 import React, {Component} from 'react';
 import {} from "react-router-dom";
 import Form from "./Form";
+import ReactMarkdown from 'react-markdown';
 
-export default Coursedetail;
-
-
-{/*
 export default class Courses extends Component {
 
   state = {
     errors: [],
-    courseTitle: '',
+    title: '',
     description: '',
     estimatedTime: '',
     materialsNeeded: ''
   };
 
-  render() {
-    const {context} = this.props;
-    const {authenticatedUser} = context;
+  componentDidMount() {
+    console.log(this.props);
+    this.getCourses();}
 
+
+
+  render() {
+    
+    const {
+
+      context
+    } = this.props;
+  
     const {
       errors,
-      courseTitle,
+      title,
       description,
       estimatedTime,
       materialsNeeded,
     } = this.state;
 
+    const authUser = context.authenticatedUser;
+    const courseOwnerName = authUser ? `${authUser.firstName} ${authUser.lastName}` : "No User Signed In"
+    const user = this.context.user;
+console.log(user);
     return (
 
         <div className="bounds course--detail">
@@ -51,15 +61,15 @@ export default class Courses extends Component {
                         <div className="course--header">
                           <h4 className="course--label">Course</h4>
                           <React.Fragment>
-                            <input id="courseTitle"
-                                   name="courseTitle"
+                            <input id="title"
+                                   name="title"
                                    type="text"
-                                   className="input-title course--title--input"
-                                   placeholder="Course title..."
-                                   value={courseTitle}
+                                   className="input-title"
+                                   placeholder="Title..."
+                                   value={title}
                                    onChange={this.change}/>
                           </React.Fragment>
-                          <p>By {authenticatedUser.firstName} {authenticatedUser.lastName}</p>
+                          <p>By {courseOwnerName}</p>
                           <div className="course--description">
                             <React.Fragment>
                           <textarea id="description"
@@ -128,14 +138,14 @@ export default class Courses extends Component {
 
   submit = async () => {
     const {context} = this.props;
-    const {authenticatedUser} = context;
-    const {emailAddress} = authenticatedUser;
+    const authUser = context.authenticatedUser;
+    const {emailAddress} = authUser;
     const password = context.userPassword;
-    const userId = this.props.context.authenticatedUser.id;
+    const userId = this.props.authUser.id;
 
     const {
       errors,
-      courseTitle,
+      title,
       description,
       estimatedTime,
       materialsNeeded,
@@ -143,7 +153,7 @@ export default class Courses extends Component {
     } = this.state;
 
     const course = {
-      title: courseTitle,
+      title: title,
       description: description,
       estimatedTime,
       materialsNeeded,
@@ -167,10 +177,10 @@ export default class Courses extends Component {
   };
 
 };
-*/}
 
 
-
+{/*
+export default Coursedetail;
 function Coursedetail(props) {
   return (
 
@@ -217,3 +227,5 @@ function Coursedetail(props) {
 </div>
     );
   }
+
+*/}
