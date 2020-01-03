@@ -68,7 +68,7 @@ console.log(user);
           <div>
             <div className="actions--bar">
               <div className="bounds">
-                <div className="grid-100"><span><a className="button" href="update-course.html">Update Course</a>
+                <div className="grid-100"><span><Link className="button" to='' onClick={this.updateCourse}>Update Course</Link>
                   <Link className="button" to="/">Delete Course</Link></span>
                   <Link className="button button-secondary" to="/">Return to List</Link>
 
@@ -110,8 +110,14 @@ console.log(user);
     }
 
     
+  updateCourse = async () => {
+    const {context} = this.props;
+    const url = `/courses/${this.props.match.params.id}`;
+    const courses = this.state.course;
+    await context.data.api(url);
+    this.props.history.push(`${url}/update`, courses[0]);
+  };
   }
-
 
 
 

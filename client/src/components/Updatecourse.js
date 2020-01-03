@@ -5,26 +5,40 @@ import Form from "./Form";
 
 
 export default class UpdateCourse extends Component {
-
+// added object to course to maintain state
   state = {
     errors: [],
-    courseTitle: '',
-    description: '',
-    estimatedTime: '',
-    materialsNeeded: '',
-    id: '',
+    course: {
+      title: '',
+      description: '',
+      estimatedTime: '',
+      materialsNeeded: '',
+      id: '',
+    }
   };
-
+// console logging props to see them to build consts
   componentDidMount() {
-    const courses = this.props.location.state;
-    this.setState({
-      courseTitle: `${courses.title}`,
-      description: `${courses.description}`,
-      estimatedTime: `${courses.estimatedTime}` || null,
-      materialsNeeded: `${courses.materialsNeeded}` || null,
-      id: `${courses.id}`,
-    });
-  }
+    console.log(this.props);
+    this.getCourses();}
+
+
+
+    getCourses = async () => {
+      const url = `/courses/${this.props.match.params.id}`;
+      try {
+        const response = await this.props.context.data.api(url);
+        if (response.status === 200) {
+          await response.json().then(({ course }) => this.setState({ course }));
+        } else if (response.status === 500) {
+          this.props.history.push("/error");
+        } else {
+          throw new Error();
+        }
+      } catch (error) {
+        console.log(error);
+        this.props.history.push("/error");
+      }
+    }
 
   componentWillUnmount() {
     this.submit();
@@ -36,12 +50,16 @@ export default class UpdateCourse extends Component {
 
     const {
       errors,
-      courseTitle,
+      course
+    } = this.state;
+
+    const {
+      title,
       description,
       estimatedTime,
       materialsNeeded,
-    } = this.state;
-
+    } = course;
+// return the updated course which should be editable
     return (
 
         <div className="bounds course--detail">
@@ -68,13 +86,13 @@ export default class UpdateCourse extends Component {
                         <div className="course--header">
                           <h4 className="course--label">Course</h4>
                           <React.Fragment>
-                            <input id="courseTitle"
-                                   name="courseTitle"
+                            <input id="title"
+                                   name="title"
                                    type="text"
                                    className="input-title course--title--input"
                                    placeholder="Course title..."
-                                   value={courseTitle}
-                                   onChange={this.change}/>
+                                   value={title}
+                                   />
                           </React.Fragment>
                           <p>By {authenticatedUser.firstName} {authenticatedUser.lastName}</p>
                           <div className="course--description">
@@ -84,7 +102,7 @@ export default class UpdateCourse extends Component {
                                     type="text"
                                     placeholder="Course description..."
                                     value={description}
-                                    onChange={this.change}/>
+                                    />
                             </React.Fragment>
                           </div>
                         </div>
@@ -104,7 +122,7 @@ export default class UpdateCourse extends Component {
                                         className="course--time--input"
                                         placeholder="Hours"
                                         value={estimatedTime || ""}
-                                        onChange={this.change}/>
+                                        />
                                   </React.Fragment>
                                 </div>
                               </li>
@@ -116,7 +134,6 @@ export default class UpdateCourse extends Component {
                                         name="materialsNeeded"
                                         placeholder="List materials..."
                                         value={materialsNeeded}
-                                        onChange={this.change}
                                     />
                                 </div>
                               </li>
@@ -131,7 +148,7 @@ export default class UpdateCourse extends Component {
     );
   }
 
-  //Updates state on form content change
+  
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -143,7 +160,7 @@ export default class UpdateCourse extends Component {
     });
   };
 
-  //Submits the form when the submit button is clicked
+ 
   submit = async () => {
     const {context} = this.props;
     const {authenticatedUser} = context;
@@ -153,7 +170,7 @@ export default class UpdateCourse extends Component {
 
     const {
       errors,
-      courseTitle,
+      title,
       description,
       estimatedTime,
       materialsNeeded,
@@ -162,7 +179,7 @@ export default class UpdateCourse extends Component {
     } = this.state;
 
     const course = {
-      title: courseTitle,
+      title: title,
       description: description,
       estimatedTime,
       materialsNeeded,
@@ -170,7 +187,7 @@ export default class UpdateCourse extends Component {
       id
     };
 
-    //sends an API request when the submit button is clicked
+  {/*}  //sends an API request when the submit button is clicked
     const response = await context.data.updateCourse(course, {emailAddress, password, userId});
     if (response.status === 400) {
       response.json()
@@ -178,13 +195,17 @@ export default class UpdateCourse extends Component {
               Promise.resolve(this.setState({
                 errors: data.errors
               })));
-    }
-  };
+    }*/}
+  }; 
 
   //returns the user to the home page
   cancel = () => {
     this.props.history.push('/');
   };
+
+
+
+  
 
 }
 
@@ -221,7 +242,7 @@ export default class UpdateCourse extends Component {
 
 
 
-
+{/*
 
 export default Updatecourse;
 
@@ -267,3 +288,4 @@ function Updatecourse() {
         </div>
       </div>);
 }
+*/}
