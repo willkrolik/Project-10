@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {} from "react-router-dom";
+import React, { Component } from 'react';
+import { } from "react-router-dom";
 import Form from "./Form";
 
 
 
 export default class UpdateCourse extends Component {
-// added object to course to maintain state
+  // added object to course to maintain state
   state = {
     errors: [],
     course: {
@@ -16,37 +16,38 @@ export default class UpdateCourse extends Component {
       id: '',
     }
   };
-// console logging props to see them to build consts
+  // console logging props to see them to build consts
   componentDidMount() {
     console.log(this.props);
-    this.getCourses();}
+    this.getCourses();
+  }
 
 
 
-    getCourses = async () => {
-      const url = `/courses/${this.props.match.params.id}`;
-      try {
-        const response = await this.props.context.data.api(url);
-        if (response.status === 200) {
-          await response.json().then(({ course }) => this.setState({ course }));
-        } else if (response.status === 500) {
-          this.props.history.push("/error");
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        console.log(error);
+  getCourses = async () => {
+    const url = `/courses/${this.props.match.params.id}`;
+    try {
+      const response = await this.props.context.data.api(url);
+      if (response.status === 200) {
+        await response.json().then(({ course }) => this.setState({ course }));
+      } else if (response.status === 500) {
         this.props.history.push("/error");
+      } else {
+        throw new Error();
       }
+    } catch (error) {
+      console.log(error);
+      this.props.history.push("/error");
     }
+  }
 
   componentWillUnmount() {
     this.submit();
   }
 
   render() {
-    const {context} = this.props;
-    const {authenticatedUser} = context;
+    const { context } = this.props;
+    const { authenticatedUser } = context;
 
     const {
       errors,
@@ -59,112 +60,116 @@ export default class UpdateCourse extends Component {
       estimatedTime,
       materialsNeeded,
     } = course;
-// return the updated course which should be editable
+    // return the updated course which should be editable
     return (
 
-        <div className="bounds course--detail">
-          <h1>Update Course</h1>
-          <div>
-            {errors
-                ?
-                <ul className="validation--errors--label">
-                  {
-                    errors.length > 0
-                        ? errors.map(error => <li key={error}>{error}</li>)
-                        : ''
-                  }
-                </ul>
-                : ''
-            }
-            <Form
-                cancel={this.cancel}
-                submit={this.submit}
-                submitButtonText="Update Course"
-                elements={() => (
-                    <div>
-                      <div className="grid-66">
-                        <div className="course--header">
-                          <h4 className="course--label">Course</h4>
-                          <React.Fragment>
-                            <input id="title"
-                                   name="title"
-                                   type="text"
-                                   className="input-title course--title--input"
-                                   placeholder="Course title..."
-                                   value={title}
-                                   />
-                          </React.Fragment>
-                          <p>By {authenticatedUser.firstName} {authenticatedUser.lastName}</p>
-                          <div className="course--description">
+      <div className="bounds course--detail">
+        <h1>Update Course</h1>
+        <div>
+          {errors
+            ?
+            <ul className="validation--errors--label">
+              {
+                errors.length > 0
+                  ? errors.map(error => <li key={error}>{error}</li>)
+                  : ''
+              }
+            </ul>
+            : ''
+          }
+          <Form
+            cancel={this.cancel}
+            submit={this.submit}
+            submitButtonText="Update Course"
+            elements={() => (
+              <div>
+                <div className="grid-66">
+                  <div className="course--header">
+                    <h4 className="course--label">Course</h4>
+                    <React.Fragment>
+                      <input id="title"
+                        name="title"
+                        type="text"
+                        className="input-title course--title--input"
+                        placeholder="Course title..."
+                        value={title}
+                        onChange={this.change}
+                      />
+                    </React.Fragment>
+                    <p>By {authenticatedUser.firstName} {authenticatedUser.lastName}</p>
+                    <div className="course--description">
+                      <React.Fragment>
+                        <textarea id="description"
+                          name="description"
+                          type="text"
+                          placeholder="Course description..."
+                          value={description}
+                          onChange={this.change}
+                        />
+                      </React.Fragment>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="grid-25 grid-right">
+                    <div className="course--stats">
+                      <ul className="course--stats--list">
+                        <li key="Estimated Time">
+                          <h4>Estimated Time</h4>
+                          <div>
                             <React.Fragment>
-                          <textarea id="description"
-                                    name="description"
-                                    type="text"
-                                    placeholder="Course description..."
-                                    value={description}
-                                    />
+                              <input
+                                id="estimatedTime"
+                                name="estimatedTime"
+                                type="text"
+                                className="course--time--input"
+                                placeholder="Hours"
+                                value={estimatedTime || ""}
+                                onChange={this.change}
+                              />
                             </React.Fragment>
                           </div>
-                        </div>
-                      </div>
-                      <div>
-                        <div className="grid-25 grid-right">
-                          <div className="course--stats">
-                            <ul className="course--stats--list">
-                              <li key="Estimated Time">
-                                <h4>Estimated Time</h4>
-                                <div>
-                                  <React.Fragment>
-                                    <input
-                                        id="estimatedTime"
-                                        name="estimatedTime"
-                                        type="text"
-                                        className="course--time--input"
-                                        placeholder="Hours"
-                                        value={estimatedTime || ""}
-                                        />
-                                  </React.Fragment>
-                                </div>
-                              </li>
-                              <li key="Materials">
-                                <h4>Materials Needed</h4>
-                                <div>
-                                    <textarea
-                                        id="materialsNeeded"
-                                        name="materialsNeeded"
-                                        placeholder="List materials..."
-                                        value={materialsNeeded}
-                                    />
-                                </div>
-                              </li>
-                            </ul>
+                        </li>
+                        <li key="Materials">
+                          <h4>Materials Needed</h4>
+                          <div>
+                            <textarea
+                              id="materialsNeeded"
+                              name="materialsNeeded"
+                              placeholder="List materials..."
+                              value={materialsNeeded}
+                              onChange={this.change}
+                            />
                           </div>
-                        </div>
-                      </div>
+                        </li>
+                      </ul>
                     </div>
-                )}/>
-          </div>
+                  </div>
+                </div>
+              </div>
+            )} />
         </div>
+      </div>
     );
   }
 
-  
+
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-
-    this.setState(() => {
-      return {
+    this.setState({
+      course: {
+        ...this.state.course,
         [name]: value
-      };
-    });
+      }
+    })
   };
 
- 
+
   submit = async () => {
-    const {context} = this.props;
-    const {authenticatedUser} = context;
-    const {emailAddress} = authenticatedUser;
+    const { context } = this.props;
+    const { authenticatedUser } = context;
+    const { emailAddress } = authenticatedUser;
     const password = context.userPassword;
     const userId = this.props.context.authenticatedUser.id;
 
@@ -187,7 +192,7 @@ export default class UpdateCourse extends Component {
       id
     };
 
-  {/*}  //sends an API request when the submit button is clicked
+    {/*}  //sends an API request when the submit button is clicked
     const response = await context.data.updateCourse(course, {emailAddress, password, userId});
     if (response.status === 400) {
       response.json()
@@ -196,7 +201,7 @@ export default class UpdateCourse extends Component {
                 errors: data.errors
               })));
     }*/}
-  }; 
+  };
 
   //returns the user to the home page
   cancel = () => {
@@ -205,7 +210,7 @@ export default class UpdateCourse extends Component {
 
 
 
-  
+
 
 }
 
