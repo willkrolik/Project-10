@@ -19,6 +19,7 @@ function asyncHandler(cb) {
     try {
       await cb(req, res, next);
     } catch (err) {
+      console.log(err)
       next(err);
     }
   }
@@ -30,35 +31,36 @@ function asyncHandler(cb) {
  * @param {Response} res - The Express Response object.
  * @param {Function} next - The function to call to pass execution to the next middleware.
  */
-const authenticateUser = async(req, res, next) => {
+const authenticateUser = async (req, res, next) => {
   let message = null;
 
   // Parse the user's credentials from the Authorization header.
   const credentials = auth(req);
+  console.log('successfully processed auth header', credentials);
 
   if (credentials) {
     // Look for a user whose `username` matches the credentials `name` property.
     //const user = users.find(u => u.username === credentials.name);
-     await User.findOne({where: { emailAddress : credentials.name } }).then( user => {
+    await User.findOne({ where: { emailAddress: credentials.name } }).then(user => {
+      console.log('finished lookup for creds', credentials, user);
+      if (user) {
+        const authenticated = bcrypt
+          .compareSync(credentials.pass, user.password) || credentials.pass === user.password;
+        if (authenticated) {
+          console.log(`Success for user: ${JSON.stringify(user)}`);
 
-    if (user) {
-      const authenticated = bcrypt
-        .compareSync(credentials.pass, user.password);
-      if (authenticated) {
-        console.log(`Success for username: ${user.username}`);
-
-        // Store the user on the Request object.
-        req.currentUser = user;
-      } else {
-        message = `${user.username} not found`;
+          // Store the user on the Request object.
+          req.currentUser = user;
+        } else {
+          message = `lookup of ${user.username} not found`;
+        }
       }
-    } 
-    
-    
-    else {
-      message = `User not found for username: ${credentials.name}`;
-    } 
-  })
+
+
+      else {
+        message = `User not found for username: ${credentials.name}`;
+      }
+    })
   } else {
     message = 'Auth header not found';
   }
@@ -105,7 +107,7 @@ router.post('/courses', [
 ], authenticateUser, asyncHandler(async (req, res, next) => {
   const user = req.currentUser.id;
 
-  console.log('course request', req.body);
+  
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -113,7 +115,7 @@ router.post('/courses', [
     res.status(400).json({ errors: errorMessages });
   } else {
 
-    
+
     await Course.create({ ...req.body, userId: user })
       .then((course) => {
         if (course) {
@@ -181,7 +183,7 @@ router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res, ne
 }))
 
 // returns current user 
-router.get('/users', authenticateUser, asyncHandler(async(req, res) => {
+router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
   const user = req.currentUser;
 
   res.json({
@@ -189,12 +191,13 @@ router.get('/users', authenticateUser, asyncHandler(async(req, res) => {
     firstName: user.firstName,
     lastName: user.lastName,
     emailAddress: user.emailAddress,
+    password: user.password,
   });
   res.status(200);
   res.end();
 }));
 
-// Route that creates a new user, original code credit to ISimpson
+// Route that creates a new user
 router.post('/users', [
   check('firstName')
     .exists({ checkNull: true, checkFalsy: true })
@@ -208,14 +211,17 @@ router.post('/users', [
   check('emailAddress')
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage('Value required for "emailAddress"'),
-    // Validates if each value exists, next steps would be to add more specific validation (length, etc.)
+  // Validates if each value exists, next steps would be to add more specific validation (length, etc.)
 ], asyncHandler(
   async (req, res) => {
     const errors = validationResult(req);
-   // If there are no errors, add this value to the array
+    // If there are no errors, add this value to the array
+    console.log(errors)
     if (!errors.isEmpty()) {
       const errorMessages = errors.array().map(error => error.msg);
-      res.status(400).json({errors: errorMessages});
+      console.log(errorMessages)
+      res.status(400).json({ errors: errorMessages });
+      console.log(errorMessages)
     } else {
       let users = await User.findAll({});
       const user = users.find(u => u.emailAddress === req.body.emailAddress);
@@ -230,8 +236,9 @@ router.post('/users', [
           emailAddress: req.body.emailAddress,
           password: hashedPassword
         };
+        console.log(req.body.password);
         // Use findOrCreate to create new user 
-        User.findOrCreate({where: newUser});
+        User.findOrCreate({ where: newUser });
         res.status(201).end();
       } else {
         // Returns error if the value already exists 

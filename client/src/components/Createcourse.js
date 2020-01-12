@@ -16,12 +16,12 @@ export default class CreateCourse extends Component {
       id: '',
     }
   };
-  
+
   submit = async () => {
     const url = `/courses`;
     try {
-      const response = await this.props.context.data.api(url, 'POST', this.state.course);
-      if (response.status === 200) {
+      const response = await this.props.context.data.api(url, 'POST', this.state.course, true, this.props.context.authenticatedUser);
+      if (response.status === 201) {
         this.props.history.push("/")
       } else if (response.status === 500) {
         this.props.history.push("/error");
@@ -131,7 +131,7 @@ export default class CreateCourse extends Component {
     );
   }
 
- 
+
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -143,7 +143,7 @@ export default class CreateCourse extends Component {
     })
   };
 
-  
+
 
   cancel = () => {
     this.props.history.push('/');

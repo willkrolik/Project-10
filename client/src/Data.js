@@ -3,7 +3,7 @@ import config from './config';
 export default class Data {
   api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
     const url = config.apiBaseUrl + path;
-  
+
     const options = {
       method,
       headers: {
@@ -15,8 +15,9 @@ export default class Data {
       options.body = JSON.stringify(body);
     }
 
-    if (requiresAuth) {    
-      const encodedCredentials = btoa(`${credentials.username}:${credentials.password}`);
+    if (requiresAuth) {
+      console.log('setting auth header', credentials);
+      const encodedCredentials = btoa(`${credentials.username || credentials.emailAddress}:${credentials.password}`);
       options.headers['Authorization'] = `Basic ${encodedCredentials}`;
     }
     return fetch(url, options);
@@ -34,9 +35,9 @@ export default class Data {
       throw new Error();
     }
   }
-  
+
   async createUser(firstName, lastName, emailAddress, password, confirmPassword) {
-    const response = await this.api('/users', 'POST', {firstName, lastName, emailAddress, password, confirmPassword});
+    const response = await this.api('/users', 'POST', { firstName, lastName, emailAddress, password, confirmPassword });
     if (response.status === 201) {
       return response;
     }

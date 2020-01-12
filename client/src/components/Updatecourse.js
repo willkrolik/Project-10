@@ -164,44 +164,46 @@ export default class UpdateCourse extends Component {
       }
     })
   };
-
+//fart
+  getCourses = async () => {
+    const url = `/courses/${this.props.match.params.id}`;
+    try {
+      const response = await this.props.context.data.api(url);
+      if (response.status === 200) {
+        await response.json().then(({ course }) => this.setState({ course }));
+      } else if (response.status === 500) {
+        this.props.history.push("/error");
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      console.log(error);
+      this.props.history.push("/error");
+    }
+  }
+//fart
 
   submit = async () => {
-    const { context } = this.props;
-    const { authenticatedUser } = context;
-    const { emailAddress } = authenticatedUser;
-    const password = context.userPassword;
-    const userId = this.props.context.authenticatedUser.id;
+    const url = `/courses/${this.props.match.params.id}`;
+    try {
+      const response = await this.props.context.data.api(url, 'PUT', this.state.course, true, this.props.context.authenticatedUser);
+      console.log("this far!");
+      if (response.status === 201) {
+        console.log("201 working?")
+        this.props.history.push("/")
+      } else if (response.status === 500) {
+        this.props.history.push("/error");
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      console.log(error);
+      this.props.history.push("/error");
+    }
+  }
 
-    const {
-      errors,
-      title,
-      description,
-      estimatedTime,
-      materialsNeeded,
-      id,
+    
 
-    } = this.state;
-
-    const course = {
-      title: title,
-      description: description,
-      estimatedTime,
-      materialsNeeded,
-      errors,
-      id
-    };
-
-    {/*}  //sends an API request when the submit button is clicked
-    const response = await context.data.updateCourse(course, {emailAddress, password, userId});
-    if (response.status === 400) {
-      response.json()
-          .then(data =>
-              Promise.resolve(this.setState({
-                errors: data.errors
-              })));
-    }*/}
-  };
 
   //returns the user to the home page
   cancel = () => {
