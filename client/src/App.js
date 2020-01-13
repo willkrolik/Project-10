@@ -14,6 +14,7 @@ import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
 import Forbidden from './components/Forbidden';
 import Authenticated from './components/Authenticated';
+import DeleteCourse from './components/DeleteCourse';
 import CreateCourse from './components/CreateCourse';
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute';
@@ -29,6 +30,7 @@ const UserSignOutWithContext = withContext(UserSignOut);
 const CourseDetailWithContext = withContext(CourseDetail);
 const UpdateCourseWithContext = withContext(UpdateCourse);
 const CreateCourseWithContext = withContext(CreateCourse);
+const DeleteCourseWithContext = withContext(DeleteCourse);
 
 export default () => (
   <Router>
@@ -37,6 +39,7 @@ export default () => (
 
       <Switch>
       <PrivateRoute exact path="/courses/create" component={CreateCourseWithContext}/>
+      <PrivateRoute exact path="/courses/delete" component={DeleteCourseWithContext}/>
         <Route exact path="/courses/:id" component={CourseDetailWithContext}/>
         <Route exact path="/" component={CourseswithContext} /> 
         <PrivateRoute exact path="/courses/:id/update" component={UpdateCourseWithContext}/>
