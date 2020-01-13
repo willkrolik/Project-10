@@ -15,7 +15,7 @@ export default class CourseDetail extends Component {
 
 
   componentDidMount() {
-    console.log(this.props);
+
     this.getCourses();}
 
 
@@ -25,7 +25,8 @@ export default class CourseDetail extends Component {
       try {
         const response = await this.props.context.data.api(url);
         if (response.status === 200) {
-          await response.json().then(({ course }) => this.setState({ course }));
+          await response.json().then(({ course }) => this.setState({ course }, () => console.log(course)));
+         
         } else if (response.status === 500) {
           this.props.history.push("/error");
         } else {
@@ -59,7 +60,7 @@ export default class CourseDetail extends Component {
       const authUser = context.authenticatedUser;
       const courseOwnerName = authUser ? `${authUser.firstName} ${authUser.lastName}` : "No User Signed In"
       const user = this.context.user;
-console.log(user);
+
       return (
 
 

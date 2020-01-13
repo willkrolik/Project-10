@@ -18,7 +18,7 @@ export default class UpdateCourse extends Component {
   };
   // console logging props to see them to build consts
   componentDidMount() {
-    console.log(this.props);
+    
     this.getCourses();
   }
 
@@ -36,7 +36,7 @@ export default class UpdateCourse extends Component {
         throw new Error();
       }
     } catch (error) {
-      console.log(error);
+     
       this.props.history.push("/error");
     }
   }
@@ -177,7 +177,7 @@ export default class UpdateCourse extends Component {
         throw new Error();
       }
     } catch (error) {
-      console.log(error);
+    
       this.props.history.push("/error");
     }
   }
@@ -187,7 +187,7 @@ export default class UpdateCourse extends Component {
     const url = `/courses/${this.props.match.params.id}`;
     try {
       const response = await this.props.context.data.api(url, 'PUT', this.state.course, true, this.props.context.authenticatedUser);
-      console.log("this far!");
+      
       if (response.status === 201) {
         console.log("201 working?")
         this.props.history.push("/")

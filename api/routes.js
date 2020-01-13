@@ -19,7 +19,7 @@ function asyncHandler(cb) {
     try {
       await cb(req, res, next);
     } catch (err) {
-      console.log(err)
+
       next(err);
     }
   }
@@ -105,9 +105,9 @@ router.post('/courses', [
   check('title').exists().withMessage('Value required for title'),
   check('description').exists().withMessage('Value required for description')
 ], authenticateUser, asyncHandler(async (req, res, next) => {
-  const user = req.currentUser.id;
+  const user = authenticateUser.id //req.currentUser.id;
 
-  
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

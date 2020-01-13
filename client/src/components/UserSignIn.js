@@ -79,7 +79,7 @@ export default class UserSignIn extends Component {
       })
       .catch((error) => {
         
-        console.log(this.props.history);
+        
         this.props.history.push('/error');
       });
   }
