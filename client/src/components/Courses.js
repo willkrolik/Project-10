@@ -10,7 +10,8 @@ export default class Courses extends Component {
   }
   getCourses = async () => {
     const user = this.props.context.authenticatedUser;
-    const url = !user ? `/courses/?userId=${2}` : `/courses/?userId=${user.id}`
+    //const url = (user.id && `/courses/?userId=${user.id}`) || (`/courses/?userId=${78}`)
+    const url = !user ? `/courses/?userId=${78}` : `/courses/?userId=${user.id}`
     console.log(user);
 
     try {

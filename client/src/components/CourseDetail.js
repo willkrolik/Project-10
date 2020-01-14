@@ -70,7 +70,7 @@ export default class CourseDetail extends Component {
             <div className="actions--bar">
               <div className="bounds">
                 <div className="grid-100"><span><Link className="button" to={`/courses/${this.props.match.params.id}/update`}>Update Course</Link>
-                <Link className="button" onClick={this.deleteCourse} to='/courses/delete'>Delete Course!</Link></span>
+                <Link className="button" onClick={this.deleteCourse} to='/courses/delete'>Delete Course</Link></span>
                   <Link className="button button-secondary" to="/">Return to List</Link>
 
 
@@ -116,7 +116,7 @@ export default class CourseDetail extends Component {
       const url = `/courses/${this.props.match.params.id}`;
       try {
         const response = await this.props.context.data.api(url, 'DELETE', this.state.course, true, this.props.context.authenticatedUser);
-        if (response.status === 201) {
+        if (response.status === 204) {
           this.props.history.push("/")
         } else if (response.status === 500) {
           this.props.history.push("/error");
