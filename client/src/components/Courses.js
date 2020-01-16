@@ -11,14 +11,17 @@ export default class Courses extends Component {
   getCourses = async () => {
     const user = this.props.context.authenticatedUser;
     //const url = (user.id && `/courses/?userId=${user.id}`) || (`/courses/?userId=${78}`)
-    const url = !user ? `/courses/?userId=${78}` : `/courses/?userId=${user.id}`
+    const url = !user ? `/courses/?userId=${78}` 
+    : `/courses/?userId=${user.id}`
     console.log(user);
 
     try {
       const response = await this.props.context.data.api(url);
       if (response.status === 200) {
         await response.json().then(({courses}) => this.setState({courses }));
-      } else if (response.status === 500) {
+      } else if (response.status === 403) {
+        this.props.history.push("/Forbidden");
+      }else if (response.status === 500) {
         this.props.history.push("/error");
       } else {
         throw new Error();

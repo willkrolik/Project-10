@@ -23,6 +23,8 @@ export default class CreateCourse extends Component {
       const response = await this.props.context.data.api(url, 'POST', this.state.course, true, this.props.context.authenticatedUser);
       if (response.status === 201) {
         this.props.history.push("/")
+      } else if (response.status === 403) {
+        this.props.history.push("/Forbidden");
       } else if (response.status === 500) {
         this.props.history.push("/error");
       } else {

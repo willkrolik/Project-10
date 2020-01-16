@@ -191,6 +191,8 @@ export default class UpdateCourse extends Component {
       if (response.status === 201) {
         console.log("201 working?")
         this.props.history.push("/")
+      } else if (response.status === 403) {
+        this.props.history.push("/Forbidden");
       } else if (response.status === 500) {
         this.props.history.push("/error");
       } else {

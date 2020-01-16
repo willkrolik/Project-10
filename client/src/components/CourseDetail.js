@@ -27,6 +27,8 @@ export default class CourseDetail extends Component {
         if (response.status === 200) {
           await response.json().then(({ course }) => this.setState({ course }, () => console.log(course)));
          
+        } else if (response.status === 403) {
+          this.props.history.push("/Forbidden");
         } else if (response.status === 500) {
           this.props.history.push("/error");
         } else {
@@ -118,6 +120,8 @@ export default class CourseDetail extends Component {
         const response = await this.props.context.data.api(url, 'DELETE', this.state.course, true, this.props.context.authenticatedUser);
         if (response.status === 204) {
           this.props.history.push("/")
+        } else if (response.status === 403) {
+          this.props.history.push("/Forbidden");
         } else if (response.status === 500) {
           this.props.history.push("/error");
         } else {
