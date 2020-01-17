@@ -42,12 +42,12 @@ const authenticateUser = async (req, res, next) => {
     // Look for a user whose `username` matches the credentials `name` property.
     //const user = users.find(u => u.username === credentials.name);
     await User.findOne({ where: { emailAddress: credentials.name } }).then(user => {
-      console.log('finished lookup for creds', credentials, user);
+      
       if (user) {
         const authenticated = bcrypt
           .compareSync(credentials.pass, user.password) || credentials.pass === user.password;
         if (authenticated) {
-          console.log(`Success for user: ${JSON.stringify(user)}`);
+
 
           // Store the user on the Request object.
           req.currentUser = user;
@@ -216,12 +216,9 @@ router.post('/users', [
   async (req, res) => {
     const errors = validationResult(req);
     // If there are no errors, add this value to the array
-    console.log(errors)
     if (!errors.isEmpty()) {
       const errorMessages = errors.array().map(error => error.msg);
-      console.log(errorMessages)
       res.status(400).json({ errors: errorMessages });
-      console.log(errorMessages)
     } else {
       let users = await User.findAll({});
       const user = users.find(u => u.emailAddress === req.body.emailAddress);

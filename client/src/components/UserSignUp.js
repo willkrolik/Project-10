@@ -80,7 +80,6 @@ export default class UserSignUp extends Component {
       };
     });
   }
-
   submit = async () => {
     const { context } = this.props;
     const {
@@ -98,10 +97,6 @@ export default class UserSignUp extends Component {
       password,
       errors
     };
-    // .then(errors => {
-    //   if (errors.length) {
-    //     this.setState({ errors });
-    //   } else
     context.actions.signUp(user.firstName, user.lastName, user.emailAddress, user.password)
        .then(() => {
           context.actions.signIn(user.emailAddress, user.password)
@@ -111,7 +106,6 @@ export default class UserSignUp extends Component {
         }
       )
       .catch((err) => {
-        console.log(err);
         this.props.history.push('/error');
       });
   }

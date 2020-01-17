@@ -43,7 +43,7 @@ export class Provider extends Component {
         };
       });
       const cookieOptions = {
-        expires: 1 // 1 day
+        expires: 1
       };
       Cookies.set('authenticatedUser', JSON.stringify(user), cookieOptions);
     }
@@ -59,7 +59,7 @@ export class Provider extends Component {
         };
       });
       const cookieOptions = {
-        expires: 1 // 1 day
+        expires: 1 
       };
       Cookies.set('authenticatedUser', JSON.stringify(user), cookieOptions);
     }

@@ -9,13 +9,7 @@ export default class Courses extends Component {
     this.getCourses();
   }
   getCourses = async () => {
-    //const user = this.props.context.authenticatedUser;
-    //const url = (user.id && `/courses/?userId=${user.id}`) || (`/courses/?userId=${78}`)
-    //const url = !user ? `/courses/?userId=${78}` :
-    //`/courses/?userId=${user.id}`
     const url = '/courses'
-    //console.log(user);
-
     try {
       const response = await this.props.context.data.api(url);
       if (response.status === 200) {
@@ -28,7 +22,6 @@ export default class Courses extends Component {
         throw new Error();
       }
     } catch (error) {
-      console.log(error);
       this.props.history.push("/error");
     }
   };

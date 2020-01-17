@@ -16,7 +16,7 @@ export default class Data {
     }
 
     if (requiresAuth) {
-      console.log('setting auth header', credentials);
+
       const encodedCredentials = btoa(`${credentials.username || credentials.emailAddress}:${credentials.password}`);
       options.headers['Authorization'] = `Basic ${encodedCredentials}`;
     }

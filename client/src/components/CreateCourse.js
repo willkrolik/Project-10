@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { } from "react-router-dom";
 import Form from "./Form";
 
-
-
 export default class CreateCourse extends Component {
   // added object to course to maintain state
   state = {
@@ -16,7 +14,6 @@ export default class CreateCourse extends Component {
       id: '',
     }
   };
-
   submit = async () => {
     const url = `/courses`;
     try {
@@ -31,12 +28,9 @@ export default class CreateCourse extends Component {
         throw new Error();
       }
     } catch (error) {
-      console.log(error);
       this.props.history.push("/error");
     }
   }
-
-
   render() {
     const
       {
@@ -45,20 +39,14 @@ export default class CreateCourse extends Component {
         estimatedTime,
         materialsNeeded
       } = this.state.course;
-
-
     const { context } = this.props;
-
-
     const authUser = context.authenticatedUser;
     const courseOwnerName = authUser ? `${authUser.firstName} ${authUser.lastName}` : "No User Signed In"
     // return the updated course which should be editable
     return (
-
       <div className="bounds course--detail">
         <h1>Create Course</h1>
         <div>
-
           <Form
             cancel={this.cancel}
             submit={this.submit}
@@ -132,8 +120,6 @@ export default class CreateCourse extends Component {
       </div>
     );
   }
-
-
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -144,9 +130,6 @@ export default class CreateCourse extends Component {
       }
     })
   };
-
-
-
   cancel = () => {
     this.props.history.push('/');
   };

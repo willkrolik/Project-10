@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { } from "react-router-dom";
 import Form from "./Form";
 
-
-
 export default class UpdateCourse extends Component {
   // added object to course to maintain state
   state = {
@@ -18,12 +16,8 @@ export default class UpdateCourse extends Component {
   };
   // console logging props to see them to build consts
   componentDidMount() {
-    
     this.getCourses();
   }
-
-
-
   getCourses = async () => {
     const url = `/courses/${this.props.match.params.id}`;
     try {
@@ -40,11 +34,9 @@ export default class UpdateCourse extends Component {
       this.props.history.push("/error");
     }
   }
-
   componentWillUnmount() {
     this.submit();
   }
-
   render() {
     const { context } = this.props;
     const { authenticatedUser } = context;
@@ -153,7 +145,6 @@ export default class UpdateCourse extends Component {
     );
   }
 
-
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -164,7 +155,6 @@ export default class UpdateCourse extends Component {
       }
     })
   };
-//fart
   getCourses = async () => {
     const url = `/courses/${this.props.match.params.id}`;
     try {
@@ -181,15 +171,11 @@ export default class UpdateCourse extends Component {
       this.props.history.push("/error");
     }
   }
-//fart
-
   submit = async () => {
     const url = `/courses/${this.props.match.params.id}`;
     try {
       const response = await this.props.context.data.api(url, 'PUT', this.state.course, true, this.props.context.authenticatedUser);
-      
       if (response.status === 201  || response.status === 204 || response.status === 200) {
-        console.log("201 working?")
         this.props.history.push("/")
       } else if (response.status === 403) {
         this.props.history.push("/Forbidden");
@@ -199,14 +185,9 @@ export default class UpdateCourse extends Component {
         throw new Error();
       }
     } catch (error) {
-      console.log(error);
       this.props.history.push("/error");
     }
   }
-
-    
-
-
   //returns the user to the home page
   cancel = () => {
     this.props.history.push('/');

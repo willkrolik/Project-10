@@ -8,14 +8,12 @@ export default class UserSignIn extends Component {
     password: '',
     errors: [],
   }
-
   render() {
     const {
       emailAddress,
       password,
       errors,
     } = this.state;
-
     return (
       <div className="bounds">
         <div className="grid-33 centered signin">
@@ -50,7 +48,6 @@ export default class UserSignIn extends Component {
       </div>
     );
   }
-
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -61,7 +58,6 @@ export default class UserSignIn extends Component {
       };
     });
   }
-
   submit = async () => {
     const { context } = this.props;
     const { from } = this.props.location.state || { from: { pathname: '/authenticated' } };
@@ -78,12 +74,9 @@ export default class UserSignIn extends Component {
         }
       })
       .catch((error) => {
-        
-        
         this.props.history.push('/error');
       });
   }
-
   cancel = () => {
     this.props.history.push('/');
   }
