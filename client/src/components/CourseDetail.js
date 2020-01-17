@@ -43,13 +43,14 @@ export default class CourseDetail extends Component {
 
     render() {
 
-      let title, description, estimatedTime, materialsNeeded
+      let title, description, estimatedTime, materialsNeeded, userId
       if (this.state.course) {
         ({
           title,
           description,
           estimatedTime,
-          materialsNeeded
+          materialsNeeded,
+          userId
         } = this.state.course);
       }
       

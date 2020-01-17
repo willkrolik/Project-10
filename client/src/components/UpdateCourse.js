@@ -188,7 +188,7 @@ export default class UpdateCourse extends Component {
     try {
       const response = await this.props.context.data.api(url, 'PUT', this.state.course, true, this.props.context.authenticatedUser);
       
-      if (response.status === 201) {
+      if (response.status === 201  || response.status === 204 || response.status === 200) {
         console.log("201 working?")
         this.props.history.push("/")
       } else if (response.status === 403) {
