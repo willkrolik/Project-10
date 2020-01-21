@@ -36,7 +36,7 @@ const authenticateUser = async (req, res, next) => {
 
   // Parse the user's credentials from the Authorization header.
   const credentials = auth(req);
-  console.log('successfully processed auth header', credentials);
+  
 
   if (credentials) {
     // Look for a user whose `username` matches the credentials `name` property.
@@ -102,8 +102,8 @@ router.get('/courses/:id', asyncHandler(async (req, res, next) => {
 
 // creates course and description, original route code credit to ISimpson
 router.post('/courses', [
-  check('title').exists().withMessage('Value required for title'),
-  check('description').exists().withMessage('Value required for description')
+  check('title').exists().not().isEmpty().withMessage('Value required for title'),
+  check('description').exists().not().isEmpty().withMessage('Value required for description')
 ], authenticateUser, asyncHandler(async (req, res, next) => {
   const user = req.currentUser.id; //req.currentUser.id;
 
@@ -128,8 +128,8 @@ router.post('/courses', [
 }))
 //modify existing course, original code credit to ISimpson
 router.put('/courses/:id', [
-  check('title').exists().withMessage('Value required for for title'),
-  check('description').exists().withMessage('Value required for description')
+  check('title').exists().not().isEmpty().withMessage('Value required for for title'),
+  check('description').exists().not().isEmpty().withMessage('Value required for description')
 ], authenticateUser, asyncHandler(async (req, res, next) => {
   const user = req.currentUser.id;
 
@@ -233,7 +233,7 @@ router.post('/users', [
           emailAddress: req.body.emailAddress,
           password: hashedPassword
         };
-        console.log(req.body.password);
+    
         // Use findOrCreate to create new user 
         User.findOrCreate({ where: newUser });
         res.status(201).end();

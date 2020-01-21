@@ -4,10 +4,9 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-
+// All routes with contnext, some unused
 import Courses from './components/Courses'
 import Header from './components/Header';
-import Public from './components/Public';
 import NotFound from './components/NotFound';
 import UserSignUp from './components/UserSignUp';
 import UserSignIn from './components/UserSignIn';

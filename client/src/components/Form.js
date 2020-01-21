@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default (props) => {
+  // keeping this component but it could be refactored into others
   const {
     cancel,
     errors,

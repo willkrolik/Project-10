@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import Data from './Data';
-
+// refer to this file and Data.js for most issues, the context method handles a great deal of this app's functionality
 const Context = React.createContext(); 
 
 export class Provider extends Component {

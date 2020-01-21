@@ -10,6 +10,7 @@ export default class CourseDetail extends Component {
   componentDidMount() {
     this.getCourses();
   }
+  //dynamically pulls thecourse detail, will pass back forbidden if the user does not own the course
   getCourses = async () => {
     const url = `/courses/${this.props.match.params.id}`;
     try {
@@ -29,20 +30,19 @@ export default class CourseDetail extends Component {
     }
   }
   render() {
-    let title, description, estimatedTime, materialsNeeded, userId
+    let title, description, estimatedTime, materialsNeeded
     if (this.state.course) {
       ({
         title,
         description,
         estimatedTime,
-        materialsNeeded,
-        userId
+        materialsNeeded
       } = this.state.course);
     }
     const {
       context
     } = this.props;
-
+    // renders the page, ideally, update and delete only exist for the course owner
     const authUser = context.authenticatedUser;
     const courseOwnerName = authUser ? `${authUser.firstName} ${authUser.lastName}` : "No User Signed In"
     return (
@@ -89,6 +89,8 @@ export default class CourseDetail extends Component {
       </div>
     );
   }
+
+// it made sense for the delete method to live in the details component
   deleteCourse = async () => {
     const url = `/courses/${this.props.match.params.id}`;
     try {
