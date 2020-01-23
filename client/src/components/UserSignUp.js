@@ -20,10 +20,23 @@ export default class UserSignUp extends Component {
       errors,
     } = this.state;
 
+    let errorObject;
+    console.log(errors.length);
+    if (this.state.errors.length <= 1) {
+      errorObject = errors
+    } else {
+      errorObject = errors.map(error => <li key={error}>{error}</li>)
+    }
+
     return (
       <div className="bounds">
         <div className="grid-33 centered signin">
           <h1>Sign Up</h1>
+          <ul className="validation--errors--label">
+              {
+                errorObject
+              }
+            </ul>
           <Form
             cancel={this.cancel}
             errors={errors}

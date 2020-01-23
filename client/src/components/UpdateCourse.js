@@ -198,7 +198,7 @@ export default class UpdateCourse extends Component {
   }
   //returns the user to the home page
   cancel = () => {
-    this.props.history.push('/');
+    window.history.back();
   };
 
 

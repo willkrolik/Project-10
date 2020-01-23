@@ -200,16 +200,16 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
 // Route that creates a new user
 router.post('/users', [
   check('firstName')
-    .exists({ checkNull: true, checkFalsy: true })
+    .exists().not().isEmpty()
     .withMessage('Value required for "first name"'),
   check('lastName')
-    .exists({ checkNull: true, checkFalsy: true })
+    .exists().not().isEmpty()
     .withMessage('Value required for "last name"'),
   check('password')
-    .exists({ checkNull: true, checkFalsy: true })
+    .exists().not().isEmpty()
     .withMessage('Value required for "password"'),
   check('emailAddress')
-    .exists({ checkNull: true, checkFalsy: true })
+    .exists().not().isEmpty()
     .withMessage('Value required for "emailAddress"'),
   // Validates if each value exists, next steps would be to add more specific validation (length, etc.)
 ], asyncHandler(

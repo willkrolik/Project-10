@@ -18,6 +18,17 @@ export default class UserSignIn extends Component {
       <div className="bounds">
         <div className="grid-33 centered signin">
           <h1>Sign In</h1>
+          {errors
+                ?
+                <ul className="validation--errors--label">
+                  {
+                    errors
+                        ? errors.map(error => <li key={error}>{error}</li>)
+                        : ''
+                  }
+                </ul>
+                : ''
+            }
           <Form 
             cancel={this.cancel}
             errors={errors}
