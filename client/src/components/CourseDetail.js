@@ -16,7 +16,7 @@ export default class CourseDetail extends Component {
     try {
       const response = await this.props.context.data.api(url);
       if (response.status === 200) {
-        await response.json().then(({ course }) => this.setState({ course }, () => console.log(course)));
+        await response.json().then(({ course }) => this.setState({ course }));
 
       } else if (response.status === 403) {
         this.props.history.push("/Forbidden");
@@ -30,9 +30,15 @@ export default class CourseDetail extends Component {
     }
   }
   render() {
-    let title, description, estimatedTime, materialsNeeded
+    let userId, title, description, estimatedTime, materialsNeeded
     if (this.state.course) {
+
+      // put user validation here
+
+
+
       ({
+        userId,
         title,
         description,
         estimatedTime,
@@ -44,6 +50,7 @@ export default class CourseDetail extends Component {
     } = this.props;
     // renders the page, ideally, update and delete only exist for the course owner
     const authUser = context.authenticatedUser;
+    console.log('course', title);
     const courseOwnerName = authUser ? `${authUser.firstName} ${authUser.lastName}` : "No User Signed In"
     return (
       <div>
@@ -51,8 +58,13 @@ export default class CourseDetail extends Component {
         <div>
           <div className="actions--bar">
             <div className="bounds">
-              <div className="grid-100"><span><Link className="button" to={`/courses/${this.props.match.params.id}/update`}>Update Course</Link>
-                <Link className="button" onClick={this.deleteCourse} to='/courses/delete'>Delete Course</Link></span>
+
+              <div className="grid-100">
+                {authUser.id === userId && <span>
+                  <Link className="button" to={`/courses/${this.props.match.params.id}/update`}>Update Course</Link>
+                  <Link className="button" onClick={this.deleteCourse} to='/courses/delete'>Delete Course</Link>
+                </span>}
+
                 <Link className="button button-secondary" to="/">Return to List</Link>
               </div>
             </div>
@@ -90,7 +102,7 @@ export default class CourseDetail extends Component {
     );
   }
 
-// it made sense for the delete method to live in the details component
+  // it made sense for the delete method to live in the details component
   deleteCourse = async () => {
     const url = `/courses/${this.props.match.params.id}`;
     try {

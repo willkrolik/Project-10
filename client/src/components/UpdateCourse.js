@@ -34,9 +34,9 @@ export default class UpdateCourse extends Component {
       this.props.history.push("/error");
     }
   }
-  componentWillUnmount() {
-    this.submit();
-  }
+  // componentWillUnmount() {
+  //   this.submit();
+  // }
   render() {
     const { context } = this.props;
     const { authenticatedUser } = context;
@@ -198,7 +198,7 @@ export default class UpdateCourse extends Component {
   }
   //returns the user to the home page
   cancel = () => {
-    window.history.back();
+    this.props.history.push(`/courses/${this.props.match.params.id}`);
   };
 
 

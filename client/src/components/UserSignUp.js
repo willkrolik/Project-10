@@ -8,6 +8,7 @@ export default class UserSignUp extends Component {
     lastName: '',
     emailAddress: '',
     password: '',
+    passwordError: null,
     errors: [],
   }
 
@@ -17,16 +18,18 @@ export default class UserSignUp extends Component {
       lastName,
       emailAddress,
       password,
+      confirmPassword,
       errors,
+      passwordError
     } = this.state;
 
-    let errorObject;
-    console.log(errors.length);
-    if (this.state.errors.length <= 1) {
-      errorObject = errors
-    } else {
-      errorObject = errors.map(error => <li key={error}>{error}</li>)
-    }
+    // let errorObject;
+    // console.log(errors.length);
+    // if (this.state.errors.length <= 1) {
+    //   errorObject = errors
+    // } else {
+    //   errorObject = errors.map(error => <li key={error}>{error}</li>)
+    // }
 
     return (
       <div className="bounds">
@@ -34,8 +37,14 @@ export default class UserSignUp extends Component {
           <h1>Sign Up</h1>
           <ul className="validation--errors--label">
               {
-                errorObject
+                errors
+                    ? errors.map(error => <li key={error}>{error}</li>)
+                    : ''
               }
+              { passwordError && password !== confirmPassword &&
+                  <li>Passwords do not match</li>
+              }
+              
             </ul>
           <Form
             cancel={this.cancel}
@@ -72,6 +81,13 @@ export default class UserSignUp extends Component {
                   value={password}
                   onChange={this.change}
                   placeholder="Password" />
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="confirmPassword"
+                  value={confirmPassword}
+                  onChange={this.change}
+                  placeholder="Confirm Password" />
                 
               </React.Fragment>
             )} />
@@ -100,7 +116,8 @@ export default class UserSignUp extends Component {
       lastName,
       emailAddress,
       password,
-      errors
+      errors,
+      confirmPassword
     } = this.state;
     // Create user
     const user = {
@@ -110,8 +127,19 @@ export default class UserSignUp extends Component {
       password,
       errors
     };
+    if (password !== confirmPassword) {
+      this.setState({passwordError: true});
+      return;
+    }
     context.actions.signUp(user.firstName, user.lastName, user.emailAddress, user.password)
-       .then(() => {
+
+
+       .then((createdUser) => {
+         if (createdUser.errors){
+           console.log("user has errors", createdUser);
+          this.setState( {errors: createdUser.errors});
+          return;
+         }
           context.actions.signIn(user.emailAddress, user.password)
             .then(() => {
               this.props.history.push({pathname: '/authenticated'});

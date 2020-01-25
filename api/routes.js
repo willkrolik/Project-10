@@ -36,13 +36,13 @@ const authenticateUser = async (req, res, next) => {
 
   // Parse the user's credentials from the Authorization header.
   const credentials = auth(req);
-  
+  console.log(credentials);
 
   if (credentials) {
     // Look for a user whose `username` matches the credentials `name` property.
     //const user = users.find(u => u.username === credentials.name);
     await User.findOne({ where: { emailAddress: credentials.name } }).then(user => {
-      
+
       if (user) {
         const authenticated = bcrypt
           .compareSync(credentials.pass, user.password) || credentials.pass === user.password;
@@ -233,9 +233,9 @@ router.post('/users', [
           emailAddress: req.body.emailAddress,
           password: hashedPassword
         };
-    
+
         // Use findOrCreate to create new user 
-        User.findOrCreate({ where: newUser });
+        await User.findOrCreate({ where: newUser });
         res.status(201).end();
       } else {
         // Returns error if the value already exists 

@@ -50,9 +50,9 @@ export class Provider extends Component {
     return user;
   }
 
-  signUp = async (firstName, lastName, emailAddress, password, confirmPassword) => {
-    const user = await this.data.createUser(firstName, lastName, emailAddress, password, confirmPassword);
-    if (user !== null) {
+  signUp = async (firstName, lastName, emailAddress, password) => {
+    const user = await this.data.createUser(firstName, lastName, emailAddress, password);
+    if (user.errors !== null) {
       this.setState(() => {
         return {
           authenticatedUser: user,
