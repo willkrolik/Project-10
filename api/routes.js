@@ -201,16 +201,16 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
 router.post('/users', [
   check('firstName')
     .exists().not().isEmpty()
-    .withMessage('Value required for "first name"'),
+    .withMessage('Value required for "First Name"'),
   check('lastName')
     .exists().not().isEmpty()
-    .withMessage('Value required for "last name"'),
+    .withMessage('Value required for "Last Name"'),
   check('password')
     .exists().not().isEmpty()
-    .withMessage('Value required for "password"'),
+    .withMessage('Value required for "Password"'),
   check('emailAddress')
     .exists().not().isEmpty()
-    .withMessage('Value required for "emailAddress"'),
+    .withMessage('Value required for "Email Address"'),
   // Validates if each value exists, next steps would be to add more specific validation (length, etc.)
 ], asyncHandler(
   async (req, res) => {

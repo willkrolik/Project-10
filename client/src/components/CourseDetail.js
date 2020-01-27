@@ -60,7 +60,8 @@ export default class CourseDetail extends Component {
             <div className="bounds">
 
               <div className="grid-100">
-                {authUser.id === userId && <span>
+
+                {authUser && authUser.id === userId && <span>
                   <Link className="button" to={`/courses/${this.props.match.params.id}/update`}>Update Course</Link>
                   <Link className="button" onClick={this.deleteCourse} to='/courses/delete'>Delete Course</Link>
                 </span>}

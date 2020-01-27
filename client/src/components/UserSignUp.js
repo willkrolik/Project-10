@@ -84,7 +84,7 @@ export default class UserSignUp extends Component {
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="confirmPassword"
+                  type="password"
                   value={confirmPassword}
                   onChange={this.change}
                   placeholder="Confirm Password" />
@@ -129,7 +129,7 @@ export default class UserSignUp extends Component {
     };
     if (password !== confirmPassword) {
       this.setState({passwordError: true});
-      return;
+      
     }
     context.actions.signUp(user.firstName, user.lastName, user.emailAddress, user.password)
 
